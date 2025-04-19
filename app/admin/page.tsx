@@ -41,16 +41,28 @@ export default function AdminPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Tako 控制面板</h1>
-      {settings ? Object.keys(settings).map(key => (
-        <div key={key} className="mb-4">
-          <label className="mr-4 font-medium">{key}</label>
-          <input
-            value={settings[key]}
-            onChange={(e) => updateSettings(key, e.target.value)}
-            className="border px-2 py-1"
-          />
-        </div>
-      )) : '讀取中...'}
+      {settings ? (
+        <>
+          {['music', 'ai', 'weather', 'quake'].map((key) => (
+            <div key={key} className="mb-4 flex items-center gap-4">
+              <label className="capitalize w-20">{key}</label>
+              <input
+                type="checkbox"
+                checked={settings[key]}
+                onChange={(e) => updateSettings(key, e.target.checked)}
+              />
+            </div>
+          ))}
+          <div className="mb-4 flex items-center gap-4">
+            <label className="w-20">location</label>
+            <input
+              className="border px-2 py-1"
+              value={settings.location}
+              onChange={(e) => updateSettings('location', e.target.value)}
+            />
+          </div>
+        </>
+      ) : '讀取中...'}
     </div>
   );
 }
