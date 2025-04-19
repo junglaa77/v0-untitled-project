@@ -1,17 +1,18 @@
+import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const filePath = path.resolve(process.cwd(), 'settings.json');
+const settingsPath = path.join(process.cwd(), 'settings.json');
 
 export async function GET() {
-  const content = fs.readFileSync(filePath, 'utf8');
-  return new Response(content, { headers: { 'Content-Type': 'application/json' } });
+  const data = fs.readFileSync(settingsPath, 'utf-8');
+  return NextResponse.json(JSON.parse(data));
 }
 
 export async function POST(req) {
-  const update = await req.json();
-  const current = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  const merged = { ...current, ...update };
-  fs.writeFileSync(filePath, JSON.stringify(merged, null, 2));
-  return new Response(JSON.stringify(merged), { headers: { 'Content-Type': 'application/json' } });
+  const body = await req.json();
+  const data = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
+  data[body.key] = body.value;
+  fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2));
+  return NextResponse.json({ status: 'ok' });
 }
