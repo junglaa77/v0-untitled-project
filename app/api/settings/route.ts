@@ -1,3 +1,25 @@
+import fs from 'fs';
+
+// 載入設定
+const settings = JSON.parse(fs.readFileSync('./settings.json', 'utf-8'));
+
+// 判斷啟動模組
+if (settings.music) {
+  import('./modules/music.js').then(m => m.init());
+}
+
+if (settings.ai) {
+  import('./modules/ai.js').then(m => m.init());
+}
+
+if (settings.weather) {
+  import('./modules/weather.js').then(m => m.startForecast(settings.location));
+}
+
+if (settings.quake) {
+  import('./modules/quake.js').then(m => m.monitor());
+}
+
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
