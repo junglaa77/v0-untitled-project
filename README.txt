@@ -1,0 +1,1 @@
+這是 Vercel 專用控制面板 /admin，含設定讀寫功能，支援 settings.json 雲端同步
